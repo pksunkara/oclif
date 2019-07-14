@@ -1,10 +1,11 @@
 use super::types::IdentList;
+use super::utils::{to_pascal_ident, to_snake_ident};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Ident, ItemImpl};
 
 pub fn subcommands(attr: TokenStream, input: TokenStream) -> TokenStream {
-    let attr_ast = syn::parse_macro_input!(attr as IdentList);
+    let IdentList { elems } = syn::parse_macro_input!(attr);
     let ItemImpl {
         attrs,
         self_ty,
@@ -12,24 +13,18 @@ pub fn subcommands(attr: TokenStream, input: TokenStream) -> TokenStream {
         ..
     } = syn::parse_macro_input!(input);
 
-    let subcmds = &attr_ast.elems;
-    let subcmds_values: Vec<Ident> = subcmds
-        .iter()
-        .map(|x| {
-            let ident = inflector::cases::pascalcase::to_pascal_case(x.to_string().as_str());
-            Ident::new(&ident, x.span())
-        })
-        .collect();
+    let subcmds_mods: &Vec<Ident> = &elems.iter().map(|x| to_snake_ident(x)).collect();
+    let subcmds_values: &Vec<Ident> = &elems.iter().map(|x| to_pascal_ident(x)).collect();
 
     let gen = quote! {
-        #(mod #subcmds;)*
+        #(mod #subcmds_mods;)*
         #(#attrs)*
         impl Command for #self_ty {
             #(#items)*
 
             fn subcommands(&self) -> Vec<Box<dyn Command>> {
                 vec![
-                    #(Box::new(#subcmds::#subcmds_values {})),*
+                    #(Box::new(#subcmds_mods::#subcmds_values {})),*
                 ]
             }
         }
