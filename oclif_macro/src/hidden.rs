@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::ItemImpl;
 
-pub fn hidden(_attr: TokenStream, input: TokenStream) -> TokenStream {
+pub fn hidden(_: TokenStream, input: TokenStream) -> TokenStream {
     let ItemImpl {
         attrs,
         self_ty,

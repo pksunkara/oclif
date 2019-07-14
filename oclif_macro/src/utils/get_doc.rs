@@ -18,7 +18,7 @@ impl parse::Parse for EqLitStr {
     }
 }
 
-pub fn get_doc(attrs: &[Attribute]) -> (TokenStream, TokenStream) {
+pub fn get_doc(attrs: &[Attribute]) -> (String, String) {
     let mut started_long = false;
     let (mut short_doc, mut long_doc) = (vec![], vec![]);
 
@@ -40,31 +40,19 @@ pub fn get_doc(attrs: &[Attribute]) -> (TokenStream, TokenStream) {
         }
     }
 
-    let (mut short_doc_string, mut long_doc_string) = (String::from(""), String::from(""));
+    let (mut short, mut long) = (String::from(""), String::from(""));
 
     for doc in short_doc.iter() {
-        short_doc_string.push_str(&doc.value());
+        short.push_str(&doc.value());
     }
 
     // TODO: New lines in long description
     for doc in long_doc.iter() {
-        long_doc_string.push_str(&doc.value());
+        long.push_str(&doc.value());
     }
 
-    short_doc_string = short_doc_string.trim().to_string();
-    long_doc_string = long_doc_string.trim().to_string();
-
-    let short = quote! {
-        fn about(&self) -> String {
-            String::from(#short_doc_string)
-        }
-    };
-
-    let long = quote! {
-        fn long_about(&self) -> String {
-            String::from(#long_doc_string)
-        }
-    };
+    short = short.trim().to_string();
+    long = long.trim().to_string();
 
     (short, long)
 }
