@@ -6,7 +6,7 @@ use oclif_command::*;
 /// Create CLIs with a few flags or advanced CLIs that have subcommands.
 /// oclif makes it easy for you to build CLIs for your company, service, or your own development needs.
 #[name(oclif)]
-#[subcommands(hello, new)]
+#[subcommands(hello, new, add)]
 impl Command for Main {
     fn run(&self) {}
 }

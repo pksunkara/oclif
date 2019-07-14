@@ -35,3 +35,8 @@ pub fn usage(attr: TokenStream, input: TokenStream) -> TokenStream {
 pub fn aliases(attr: TokenStream, input: TokenStream) -> TokenStream {
     aliases::aliases(attr, input)
 }
+
+#[proc_macro_attribute]
+pub fn dummy(_: TokenStream, input: TokenStream) -> TokenStream {
+    input
+}
