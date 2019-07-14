@@ -1,5 +1,3 @@
-use proc_macro2::TokenStream;
-use quote::quote;
 use syn::{parse, token::Eq, Result};
 use syn::{Attribute, LitStr};
 
@@ -18,16 +16,21 @@ impl parse::Parse for EqLitStr {
     }
 }
 
-pub fn get_doc(attrs: &[Attribute]) -> (String, String) {
-    let mut started_long = false;
-    let (mut short_doc, mut long_doc) = (vec![], vec![]);
+pub fn get_doc(attrs: Vec<Attribute>) -> (String, String, Vec<Attribute>) {
+    let (mut started_long, mut save) = (false, false);
+    let (mut short_doc, mut long_doc, mut new_attrs) = (vec![], vec![], vec![]);
 
-    for attr in attrs.iter() {
-        if !attr.path.is_ident("doc") {
-            break;
+    for attr in attrs.into_iter() {
+        if !save && !attr.path.is_ident("doc") {
+            save = true;
         }
 
-        let str = syn::parse2::<EqLitStr>(attr.tts.clone()).unwrap().str;
+        if save {
+            new_attrs.push(attr);
+            continue;
+        }
+
+        let str = syn::parse2::<EqLitStr>(attr.tts).unwrap().str;
 
         if str.value().is_empty() {
             started_long = true;
@@ -54,5 +57,5 @@ pub fn get_doc(attrs: &[Attribute]) -> (String, String) {
     short = short.trim().to_string();
     long = long.trim().to_string();
 
-    (short, long)
+    (short, long, new_attrs)
 }
