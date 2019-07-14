@@ -15,11 +15,11 @@ pub fn aliases(attr: TokenStream, input: TokenStream) -> TokenStream {
     let gen = quote! {
         #(#attrs)*
         impl Command for #self_ty {
+            #(#items)*
+
             fn aliases(&self) -> Vec<String> {
                 vec![#(String::from(#elems)),*]
             }
-
-            #(#items)*
         }
     };
 

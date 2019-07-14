@@ -13,11 +13,11 @@ pub fn hidden(_attr: TokenStream, input: TokenStream) -> TokenStream {
     let gen = quote! {
         #(#attrs)*
         impl Command for #self_ty {
+            #(#items)*
+
             fn is_hidden(&self) -> bool {
                 true
             }
-
-            #(#items)*
         }
     };
 

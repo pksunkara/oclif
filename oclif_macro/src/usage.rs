@@ -14,11 +14,11 @@ pub fn usage(attr: TokenStream, input: TokenStream) -> TokenStream {
     let gen = quote! {
         #(#attrs)*
         impl Command for #self_ty {
+            #(#items)*
+
             fn usage(&self) -> Option<String> {
                 Some(String::from(#attr_ast))
             }
-
-            #(#items)*
         }
     };
 

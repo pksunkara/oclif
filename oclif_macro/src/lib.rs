@@ -3,6 +3,7 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 
 mod types;
+mod utils;
 
 mod aliases;
 mod hidden;

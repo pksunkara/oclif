@@ -25,13 +25,13 @@ pub fn subcommands(attr: TokenStream, input: TokenStream) -> TokenStream {
         #(mod #subcmds;)*
         #(#attrs)*
         impl Command for #self_ty {
+            #(#items)*
+
             fn subcommands(&self) -> Vec<Box<dyn Command>> {
                 vec![
                     #(Box::new(#subcmds::#subcmds_values {})),*
                 ]
             }
-
-            #(#items)*
         }
     };
 
