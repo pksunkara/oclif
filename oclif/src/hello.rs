@@ -1,9 +1,7 @@
-use oclif_command::Command;
+use oclif_command::*;
 
-pub struct Hello {}
-
+#[name("hello")]
+#[hidden]
 impl Command for Hello {
-    fn name(&self) -> String {
-        String::from("hello")
-    }
+    fn run(&self) {}
 }

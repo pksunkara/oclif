@@ -1,53 +1,36 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::quote;
-use syn::{ItemImpl, LitStr};
+
+mod types;
+
+mod aliases;
+mod hidden;
+mod name;
+mod subcommands;
+mod usage;
 
 #[proc_macro_attribute]
 pub fn name(attr: TokenStream, input: TokenStream) -> TokenStream {
-    let attr_ast: LitStr = syn::parse(attr).unwrap();
-    let input_ast: ItemImpl = syn::parse(input).unwrap();
-
-    let attrs = &input_ast.attrs;
-    let command_name = &input_ast.self_ty;
-    let items = &input_ast.items;
-
-    let gen = quote! {
-        struct #command_name {}
-
-        #(#attrs)*
-        impl Command for #command_name {
-            fn name(&self) -> String {
-                String::from(#attr_ast)
-            }
-
-            #(#items)*
-        }
-    };
-
-    gen.into()
+    name::name(attr, input)
 }
 
 #[proc_macro_attribute]
-pub fn description(attr: TokenStream, input: TokenStream) -> TokenStream {
-    let attr_ast: LitStr = syn::parse(attr).unwrap();
-    let input_ast: ItemImpl = syn::parse(input).unwrap();
+pub fn subcommands(attr: TokenStream, input: TokenStream) -> TokenStream {
+    subcommands::subcommands(attr, input)
+}
 
-    let attrs = &input_ast.attrs;
-    let command_name = &input_ast.self_ty;
-    let items = &input_ast.items;
+#[proc_macro_attribute]
+pub fn hidden(attr: TokenStream, input: TokenStream) -> TokenStream {
+    hidden::hidden(attr, input)
+}
 
-    let gen = quote! {
-        #(#attrs)*
-        impl Command for #command_name {
-            fn description(&self) -> String {
-                String::from(#attr_ast)
-            }
+#[proc_macro_attribute]
+pub fn usage(attr: TokenStream, input: TokenStream) -> TokenStream {
+    usage::usage(attr, input)
+}
 
-            #(#items)*
-        }
-    };
-
-    gen.into()
+#[proc_macro_attribute]
+pub fn aliases(attr: TokenStream, input: TokenStream) -> TokenStream {
+    aliases::aliases(attr, input)
 }

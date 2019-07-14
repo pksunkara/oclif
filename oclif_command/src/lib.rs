@@ -1,17 +1,27 @@
+pub use oclif_macro::*;
+
 pub trait Command {
     fn name(&self) -> String;
+    fn about(&self) -> String;
+    fn long_about(&self) -> String;
 
-    fn description(&self) -> String {
-        String::from("")
+    fn subcommands(&self) -> Vec<Box<dyn Command>> {
+        vec![]
     }
 
     fn is_hidden(&self) -> bool {
         false
     }
 
-    fn commands(&self) -> Vec<Box<dyn Command>> {
+    fn usage(&self) -> Option<String> {
+        None
+    }
+
+    fn aliases(&self) -> Vec<String> {
         vec![]
     }
+
+    // TODO: examples -> after_help
 
     fn run(&self) {}
 }

@@ -1,14 +1,14 @@
-use oclif_command::{run, Command};
-use oclif_macro::*;
+use oclif_command::*;
 
-mod hello;
-
+/// oclif: create your own CLI
+///
+/// oclif is an open source framework for building a command line interface (CLI) in Node.js.
+/// Create CLIs with a few flags or advanced CLIs that have subcommands.
+/// oclif makes it easy for you to build CLIs for your company, service, or your own development needs.
 #[name("oclif")]
-#[description("oclif: create your own CLI")]
+#[subcommands(hello, new)]
 impl Command for Main {
-    fn commands(&self) -> Vec<Box<dyn Command>> {
-        vec![Box::new(hello::Hello {})]
-    }
+    fn run(&self) {}
 }
 
 fn main() {
