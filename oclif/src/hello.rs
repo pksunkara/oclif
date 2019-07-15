@@ -7,7 +7,7 @@ use oclif_command::*;
 /// A name is a term used for identification.
 ///
 /// Example is Alice.
-#[arg(name, String, short = "n", long = name)]
+#[arg(name, Option<String>, short = "n", long = name)]
 impl Command for Hello {
     fn run(&self) {}
 }
