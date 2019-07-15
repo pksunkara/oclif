@@ -1,8 +1,8 @@
 use oclif_command::*;
 
 #[name(add)]
-/// This doc comment is ignored
 #[dummy]
+/// This doc comment is ignored
 impl Command for Add {
     fn run(&self) {}
 }

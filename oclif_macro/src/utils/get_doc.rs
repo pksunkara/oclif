@@ -16,23 +16,20 @@ impl parse::Parse for EqLitStr {
     }
 }
 
-pub fn get_doc(attrs: Vec<Attribute>) -> (String, String, Vec<Attribute>) {
-    let (mut started_long, mut save) = (false, false);
-    let (mut short_doc, mut long_doc, mut new_attrs) = (vec![], vec![], vec![]);
+pub fn get_doc(attrs: &mut Vec<Attribute>) -> (String, String) {
+    let mut started_long = false;
+    let (mut short_doc, mut long_doc) = (vec![], vec![]);
 
-    for attr in attrs.into_iter() {
-        if !save && !attr.path.is_ident("doc") {
-            save = true;
+    while !attrs.is_empty() {
+        if !attrs.first().unwrap().path.is_ident("doc") {
+            break;
         }
 
-        if save {
-            new_attrs.push(attr);
-            continue;
-        }
-
+        // TODO: Improve performance since this is O(n)
+        let attr = attrs.remove(0);
         let str = syn::parse2::<EqLitStr>(attr.tts).unwrap().str;
 
-        if str.value().is_empty() {
+        if !started_long && str.value().is_empty() {
             started_long = true;
         }
 
@@ -49,13 +46,13 @@ pub fn get_doc(attrs: Vec<Attribute>) -> (String, String, Vec<Attribute>) {
         short.push_str(&doc.value());
     }
 
-    // TODO: New lines in long description
     for doc in long_doc.iter() {
-        long.push_str(&doc.value());
+        if doc.value().is_empty() {
+            long.push_str("\n");
+        } else {
+            long.push_str(&doc.value());
+        }
     }
 
-    short = short.trim().to_string();
-    long = long.trim().to_string();
-
-    (short, long, new_attrs)
+    (short, long)
 }
