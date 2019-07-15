@@ -1,4 +1,4 @@
-use oclif_command::*;
+use oclif_macro::*;
 
 /// oclif: create your own CLI
 ///
@@ -7,10 +7,9 @@ use oclif_command::*;
 /// oclif makes it easy for you to build CLIs for your company, service, or your own development needs.
 #[name(oclif)]
 #[subcommands(hello, new, add)]
-impl Command for Main {
-    fn run(&self) {}
-}
+fn run() {}
 
 fn main() {
-    run(&Main {});
+    let opt = Oclif::from_args();
+    println!("{:?}", opt);
 }

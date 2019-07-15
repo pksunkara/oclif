@@ -49,7 +49,7 @@ pub fn arg(attr: TokenStream, input: TokenStream) -> TokenStream {
         #(#attrs)*
         pub struct #ident {
             #(#named,)*
-            // #name: #ty,
+            #name: #ty,
         }
     };
 

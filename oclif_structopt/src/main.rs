@@ -10,11 +10,11 @@ use structopt::{StructOpt, clap::AppSettings};
 #[structopt(raw(setting = "AppSettings::GlobalVersion"))]
 struct Oclif {
     #[structopt(subcommand)]
-    cmd: OclifCommand
+    cmd: OclifSubcommand
 }
 
 #[derive(Debug, StructOpt)]
-enum OclifCommand {
+enum OclifSubcommand {
     /// Generate a new CLI program
     #[structopt(name = "new", version = "0.2.0")]
     #[structopt(raw(setting = "AppSettings::ColoredHelp"))]

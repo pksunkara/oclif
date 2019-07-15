@@ -1,23 +1,29 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::ItemImpl;
+use syn::{Data, DeriveInput, Fields};
 
 pub fn hidden(_: TokenStream, input: TokenStream) -> TokenStream {
-    let ItemImpl {
-        attrs,
-        self_ty,
-        items,
-        ..
+    let DeriveInput {
+        attrs, ident, data, ..
     } = syn::parse_macro_input!(input);
+
+    let mut named;
+
+    if let Data::Struct(x) = data {
+        if let Fields::Named(y) = x.fields {
+            named = y.named;
+        } else {
+            panic!("'hidden' macro is allowed only on structs with named fields");
+        }
+    } else {
+        panic!("'hidden' macro is allowed only on structs");
+    }
 
     let gen = quote! {
         #(#attrs)*
-        impl Command for #self_ty {
-            #(#items)*
-
-            fn is_hidden(&self) -> bool {
-                true
-            }
+        #[structopt(raw(setting = "AppSettings::Hidden"))]
+        pub struct #ident {
+            #(#named,)*
         }
     };
 

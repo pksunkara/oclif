@@ -7,4 +7,5 @@ authors = ["Pavan Kumar Sunkara <pavan.sss1991@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-oclif_command = { path = "../oclif_command" }
+oclif_macro = { path = "../oclif_macro" }
+structopt = "0.2.18"

@@ -54,5 +54,5 @@ pub fn get_doc(attrs: &mut Vec<Attribute>) -> (String, String) {
         }
     }
 
-    (short, long)
+    (short.trim().to_string(), long.trim().to_string())
 }

@@ -1,4 +1,4 @@
-use oclif_command::*;
+use oclif_macro::*;
 
 /// Generate a new CLI program
 #[name(new)]
@@ -7,6 +7,4 @@ use oclif_command::*;
 #[arg(defaults, bool)]
 /// Overwrite existing files
 #[arg(force, bool)]
-impl Command for New {
-    fn run(&self) {}
-}
+fn run() {}

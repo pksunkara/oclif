@@ -1,28 +1,34 @@
 use super::types::IdentList;
-use super::utils::to_kebab_literal;
+use super::utils;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{ItemImpl, LitStr};
+use syn::{Data, DeriveInput, Fields, LitStr};
 
 pub fn aliases(attr: TokenStream, input: TokenStream) -> TokenStream {
     let IdentList { elems } = syn::parse_macro_input!(attr);
-    let ItemImpl {
-        attrs,
-        self_ty,
-        items,
-        ..
+    let DeriveInput {
+        attrs, ident, data, ..
     } = syn::parse_macro_input!(input);
 
-    let aliases: &Vec<LitStr> = &elems.iter().map(|x| to_kebab_literal(x)).collect();
+    let mut named;
+
+    if let Data::Struct(x) = data {
+        if let Fields::Named(y) = x.fields {
+            named = y.named;
+        } else {
+            panic!("'aliases' macro is allowed only on structs with named fields");
+        }
+    } else {
+        panic!("'aliases' macro is allowed only on structs");
+    }
+
+    let aliases: &Vec<LitStr> = &elems.iter().map(|x| utils::to_kebab_literal(x)).collect();
 
     let gen = quote! {
         #(#attrs)*
-        impl Command for #self_ty {
-            #(#items)*
-
-            fn aliases(&self) -> Vec<String> {
-                vec![#(String::from(#aliases)),*]
-            }
+        #(#[structopt(alias = #aliases)])*
+        pub struct #ident {
+            #(#named,)*
         }
     };
 

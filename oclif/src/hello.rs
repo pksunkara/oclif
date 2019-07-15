@@ -1,4 +1,4 @@
-use oclif_command::*;
+use oclif_macro::*;
 
 #[name(hello)]
 #[hidden]
@@ -8,6 +8,4 @@ use oclif_command::*;
 ///
 /// Example is Alice.
 #[arg(name, Option<String>, short = "n", long = name)]
-impl Command for Hello {
-    fn run(&self) {}
-}
+fn run() {}

@@ -1,6 +1,5 @@
 [workspace]
 members = [
 	"oclif",
-	"oclif_command",
 	"oclif_macro",
 ]

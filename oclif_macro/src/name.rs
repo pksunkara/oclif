@@ -1,7 +1,7 @@
-use super::utils::{get_doc, to_kebab_literal};
+use super::utils;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{Attribute, Ident, ItemImpl};
+use syn::{Attribute, Ident, ItemFn};
 
 fn get_doc_attrs_from_bottom(attrs: &mut Vec<Attribute>) -> Vec<Attribute> {
     let mut doc_attrs = vec![];
@@ -25,7 +25,9 @@ fn gather_arg_docs(
 
     for attr in attrs.into_iter() {
         if attr.path.is_ident("arg") {
-            docs.push(get_doc(&mut get_doc_attrs_from_bottom(&mut rest_attrs)));
+            docs.push(utils::get_doc(&mut get_doc_attrs_from_bottom(
+                &mut rest_attrs,
+            )));
             arg_attrs.push(attr);
         } else {
             rest_attrs.push(attr);
@@ -37,38 +39,27 @@ fn gather_arg_docs(
 
 pub fn name(attr: TokenStream, input: TokenStream) -> TokenStream {
     let attr_ast = syn::parse_macro_input!(attr as Ident);
-    let ItemImpl {
-        mut attrs,
-        self_ty,
-        items,
-        ..
+    let ItemFn {
+        mut attrs, ident, ..
     } = syn::parse_macro_input!(input);
 
-    let name = to_kebab_literal(&attr_ast);
-    let (short, long) = get_doc(&mut attrs);
-    let (arg_docs, arg_attrs, rest_attrs) = gather_arg_docs(attrs);
+    let name = utils::to_kebab_literal(&attr_ast);
+    let ty = utils::to_pascal_ident(&attr_ast);
+    let (short, long) = utils::get_doc(&mut attrs);
+    // let (arg_docs, arg_attrs, rest_attrs) = gather_arg_docs(attrs);
 
     let gen = quote! {
-        #(#arg_attrs)*
-        pub struct #self_ty {
+        use structopt::{StructOpt, clap::AppSettings};
+        // #(#arg_attrs)*
+        // #(#rest_attrs)*
+        #(#attrs)*
+        #[derive(Debug, StructOpt)]
+        #[structopt(name = #name, about = #short, long_about = #long)]
+        #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
+        pub struct #ty {
         }
 
-        #(#rest_attrs)*
-        impl Command for #self_ty {
-            fn name(&self) -> String {
-                String::from(#name)
-            }
-
-            fn about(&self) -> String {
-                String::from(#short)
-            }
-
-            fn long_about(&self) -> String {
-                String::from(#long)
-            }
-
-            #(#items)*
-        }
+        pub fn #ident() {}
     };
 
     gen.into()
