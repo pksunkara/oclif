@@ -22,8 +22,3 @@ build_macro!(hidden);
 build_macro!(usage);
 build_macro!(aliases);
 build_macro!(arg);
-
-#[proc_macro_attribute]
-pub fn dummy(_: TokenStream, input: TokenStream) -> TokenStream {
-    input
-}

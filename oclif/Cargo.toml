@@ -9,3 +9,7 @@ edition = "2018"
 [dependencies]
 oclif_macro = { path = "../oclif_macro" }
 structopt = "0.2.18"
+
+[dependencies.clap]
+git = "https://github.com/clap-rs/clap"
+branch = "v3-master"
