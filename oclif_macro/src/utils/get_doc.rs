@@ -48,11 +48,15 @@ pub fn get_doc(attrs: &mut Vec<Attribute>) -> (String, String) {
 
     for doc in long_doc.iter() {
         if doc.value().is_empty() {
-            long.push_str("\n");
+            long.push_str("\n\n");
         } else {
+            // TODO: If last 2 chars are newlines, trim this doc value
             long.push_str(&doc.value());
         }
     }
 
-    (short.trim().to_string(), long.trim().to_string())
+    (
+        short.trim().to_string(),
+        format!("{}\n\n{}", short.trim(), long.trim()),
+    )
 }
