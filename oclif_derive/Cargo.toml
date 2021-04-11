@@ -1,5 +1,5 @@
 [package]
-name = "oclif_macro"
+name = "oclif_derive"
 version = "0.1.0"
 description = ""
 license = "MIT"
@@ -10,7 +10,6 @@ edition = "2018"
 proc-macro = true
 
 [dependencies]
-syn = { version = "1", features = ["full", "extra-traits"] }
-quote = "1"
-proc-macro2 = "1"
-heck = "0.3.0"
+syn = { version = "1.0.69" }
+quote = "1.0.9"
+proc-macro2 = "1.0.26"

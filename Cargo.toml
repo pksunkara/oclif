@@ -1,5 +1,17 @@
+[package]
+name = "oclif"
+version = "0.1.0"
+description = "Rust Open CLI Framework (based on oclif.io)"
+license = "MIT"
+authors = ["Pavan Kumar Sunkara <pavan.sss1991@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+oclif_derive = { path = "../oclif_derive" }
+# clap = { path = "../../../clap-rs/clap" }
+
 [workspace]
 members = [
-	"oclif",
-	"oclif_macro",
+	".",
+	"oclif_derive",
 ]
