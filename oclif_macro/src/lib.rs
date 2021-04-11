@@ -5,6 +5,8 @@ use proc_macro::TokenStream;
 mod types;
 mod utils;
 
+// TODO: Don't use derive input unless it's struct
+
 macro_rules! build_macro {
     ($name:ident) => {
         mod $name;

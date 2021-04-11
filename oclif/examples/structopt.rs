@@ -6,8 +6,8 @@ mod add {
     /// Add a command to an existing CLI
     #[derive(Debug, StructOpt)]
     #[structopt(name = "add")]
-    #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-    #[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
+    #[structopt(setting = AppSettings::ColoredHelp)]
+    #[structopt(setting = AppSettings::VersionlessSubcommands)]
     pub struct Add {}
 }
 
@@ -19,8 +19,8 @@ mod hello {
 
         #[derive(Debug, StructOpt)]
         #[structopt(name = "user")]
-        #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-        #[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
+        #[structopt(setting = AppSettings::ColoredHelp)]
+        #[structopt(setting = AppSettings::VersionlessSubcommands)]
         pub struct User {}
     }
 
@@ -29,8 +29,8 @@ mod hello {
 
         #[derive(Debug, StructOpt)]
         #[structopt(name = "dog")]
-        #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-        #[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
+        #[structopt(setting = AppSettings::ColoredHelp)]
+        #[structopt(setting = AppSettings::VersionlessSubcommands)]
         pub struct Dog {
             /// Name of the dog you are saying hello to
             ///
@@ -44,9 +44,9 @@ mod hello {
 
     #[derive(Debug, StructOpt)]
     #[structopt(name = "hello")]
-    #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-    #[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
-    #[structopt(raw(setting = "AppSettings::Hidden"))]
+    #[structopt(setting = AppSettings::ColoredHelp)]
+    #[structopt(setting = AppSettings::VersionlessSubcommands)]
+    #[structopt(setting = AppSettings::Hidden)]
     pub struct Hello {
         #[structopt(subcommand)]
         cmd: HelloSubcommand,
@@ -67,8 +67,8 @@ mod new {
     /// Generate a new CLI program
     #[derive(Debug, StructOpt)]
     #[structopt(name = "new")]
-    #[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-    #[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
+    #[structopt(setting = AppSettings::ColoredHelp)]
+    #[structopt(setting = AppSettings::VersionlessSubcommands)]
     #[structopt(alias = "create")]
     pub struct New {
         /// Use defaults for every setting
@@ -87,8 +87,8 @@ mod new {
 /// oclif makes it easy for you to build CLIs for your company, service, or your own development needs.
 #[derive(Debug, StructOpt)]
 #[structopt(name = "oclif")]
-#[structopt(raw(setting = "AppSettings::ColoredHelp"))]
-#[structopt(raw(setting = "AppSettings::VersionlessSubcommands"))]
+#[structopt(setting = AppSettings::ColoredHelp)]
+#[structopt(setting = AppSettings::VersionlessSubcommands)]
 struct Oclif {
     #[structopt(subcommand)]
     cmd: OclifSubcommand,
