@@ -1,4 +1,4 @@
-use crate::term::{ERR_RED_BOLD, OUT_RED_BOLD, TERM_ERR, TERM_OUT};
+use crate::term::{ERR_RED_BOLD, TERM_ERR, TERM_OUT};
 
 use std::{fmt::Display, io, process::exit};
 
