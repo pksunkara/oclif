@@ -1,6 +1,6 @@
 [package]
 name = "oclif"
-version = "0.2.0"
+version = "0.2.1"
 description = "Rust Open CLI Framework (based on oclif.io)"
 repository = "https://github.com/termapps/oclif"
 license = "MIT"
