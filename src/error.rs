@@ -12,7 +12,6 @@ pub trait CliError: Display + Sized {
     }
 
     fn print_out(self) -> io::Result<()> {
-        TERM_OUT.write_str(&format!("{}: ", OUT_RED_BOLD.apply_to("error").to_string()))?;
         TERM_OUT.write_line(&self.color_out().to_string())?;
         TERM_OUT.flush()
     }
