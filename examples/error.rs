@@ -15,7 +15,7 @@ enum Error {
 }
 
 impl CliError for Error {
-    fn color_err(self) -> Self {
+    fn color(self) -> Self {
         match self {
             Self::NoConfig(key) => Self::NoConfig(ERR_YELLOW.apply_to(key).to_string()),
             Self::NotDir(path) => Self::NotDir(ERR_YELLOW.apply_to(path).to_string()),
